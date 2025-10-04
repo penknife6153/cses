@@ -1,35 +1,65 @@
 #include <iostream>
-#include <cmath>
+
 using namespace std;
 typedef long long ll;
 
-ll spiral(ll y, ll x) {
-    ll largerCoordinate, diagonalValue, diff, cellValue;
-    
-    largerCoordinate = max(y, x);
-    diagonalValue = pow((largerCoordinate - 1), 2) + largerCoordinate;
-    diff = abs(y-x);
+ll getNthDiagonal(ll n)
+{
+    n = n - 1;
+    return 1 + n * (n + 1);
+}
 
-    if (y == x) {
-        cellValue = diagonalValue;
-    } else if (y < x) {
-        cellValue = (diagonalValue & 1) ? diagonalValue + diff : diagonalValue - diff;
-    } else {
-        cellValue = (diagonalValue & 1) ? diagonalValue - diff: diagonalValue + diff;
+ll bottomHalf(ll y, ll x)
+{
+    if (y % 2 == 0)
+    {
+        return getNthDiagonal(y) + (y - x);
     }
+    else
+    {
+        return getNthDiagonal(y) - (y - x);
+    }
+}
 
-    return cellValue;
+ll topHalf(ll y, ll x)
+{
+    if (x % 2 == 0)
+    {
+        return getNthDiagonal(x) - (x - y);
+    }
+    else
+    {
+        return getNthDiagonal(x) + (x - y);
+    }
 }
 
 int main(int argc, char const *argv[])
 {
-    ll y, x, numberOfInputs;
+    // ---- FASTER I/O START ----
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    // ---- FASTER I/O END ----
 
+    ll numberOfInputs, y, x;
     cin >> numberOfInputs;
 
-    while (numberOfInputs--) {
+    for (ll i = 0; i < numberOfInputs; i++)
+    {
         cin >> y >> x;
-        cout << spiral(y, x) << endl;
+        if (y == x)
+        {
+            cout << getNthDiagonal(x);
+        }
+        else if (y > x)
+        {
+            cout << bottomHalf(y, x);
+        }
+        else
+        {
+            cout << topHalf(y, x);
+        }
+        // Use '\n' instead of endl for speed
+        cout << '\n';
     }
     return 0;
 }
